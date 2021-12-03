@@ -22,6 +22,7 @@ interface CartContextData {
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
+  const [products, setProducts] = useState<Product[]>()
   const [cart, setCart] = useState<Product[]>(() => {
     // const storagedCart = Buscar dados do localStorage
 
@@ -34,15 +35,26 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const addProduct = async (productId: number) => {
     try {
+      // TODO função que vai add product
+      // var repetido = false;
+      // cart.map(product =>{ 
+      //   if (product.id === productId) {
+      //   repetido = true
+        
+      // }})
+
+
+      api.get(`/products/${productId}`)
+        .then(response => setCart([...cart, response.data]))
+    } catch (error) {
       // TODO
-    } catch {
-      // TODO
+      console.log(error);
     }
   };
 
   const removeProduct = (productId: number) => {
     try {
-      // TODO
+      // TODOfunção que vai rm product
     } catch {
       // TODO
     }
@@ -54,8 +66,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   }: UpdateProductAmount) => {
     try {
       // TODO
-    } catch {
+    } catch (error) {
       // TODO
+
     }
   };
 
