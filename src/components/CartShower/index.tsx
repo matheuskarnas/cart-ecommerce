@@ -4,20 +4,22 @@ import {
     MdRemoveCircleOutline,
 } from 'react-icons/md';
 
-interface CartShowerProps {
+
+export interface CartShowerProps {
+    id: number;
+    title: string;
     price: number;
     image: string;
-    title: string
-    id: number;
-
-
+    amount: number;
+    handleDelete: (id: number) => void;
 }
 
-export function CartShower({price, image, title, id}:CartShowerProps) {
+export function CartShower({ price, image, title, id, amount, handleDelete }: CartShowerProps) {
+
     return (
         <tr data-testid="product" >
             <td>
-                <img src={image} />
+                <img src={image} alt="produto" />
             </td>
             <td>
                 <strong>{title}</strong>
@@ -28,8 +30,8 @@ export function CartShower({price, image, title, id}:CartShowerProps) {
                     <button
                         type="button"
                         data-testid="decrement-product"
-                    // disabled={product.amount <= 1}
-                    // onClick={() => handleProductDecrement()}
+                        //disabled={product.amount <= 1}
+                        // onClick={handleDelete(id)}
                     >
                         <MdRemoveCircleOutline size={20} />
                     </button>
@@ -37,7 +39,7 @@ export function CartShower({price, image, title, id}:CartShowerProps) {
                         type="text"
                         data-testid="product-amount"
                         readOnly
-                        value={2}
+                        value={amount}
                     />
                     <button
                         type="button"
@@ -55,7 +57,7 @@ export function CartShower({price, image, title, id}:CartShowerProps) {
                 <button
                     type="button"
                     data-testid="remove-product"
-                // onClick={() => handleRemoveProduct(product.id)}
+                    onClick={() => handleDelete(id)}
                 >
                     <MdDelete size={20} />
                 </button>

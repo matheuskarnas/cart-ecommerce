@@ -35,7 +35,7 @@ const Cart = (): JSX.Element => {
   }
 
   function handleRemoveProduct(productId: number) {
-    // TODO
+    removeProduct(productId)
   }
   console.log(cart)
   return (
@@ -51,7 +51,14 @@ const Cart = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          {cart.map(product => <CartShower price={product.price} title={product.title} image={product.image} id={product.id} />)}
+          {cart.map(product => <CartShower
+            price={product.price}
+            title={product.title}
+            image={product.image}
+            id={product.id}
+            amount={product.amount}
+            handleDelete={handleRemoveProduct}
+          />)}
         </tbody>
       </ProductTable>
 

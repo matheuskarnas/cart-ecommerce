@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { createContext, ReactNode, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
@@ -22,8 +23,9 @@ interface CartContextData {
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
-  const [products, setProducts] = useState<Product[]>()
+
   const [cart, setCart] = useState<Product[]>(() => {
+
     // const storagedCart = Buscar dados do localStorage
 
     // if (storagedCart) {
@@ -39,14 +41,16 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       // TODO função que vai add product
       for (let i = 0; i < cart.length; i++) {
         if (cart[i].id === productId) {
+          cart[i].amount = cart[i].amount + 1
           repitido = true;
         }
       }
+
       if (repitido) {
-        console.log('item já adicionado')            
+        console.log('item já adicionado')
       } else {
         api.get(`/products/${productId}`)
-        .then(response => setCart([...cart, response.data]))
+          .then(response => (setCart([...cart, response.data])));
       }
       repitido = false
     } catch (error) {
@@ -56,10 +60,12 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   };
 
   const removeProduct = (productId: number) => {
-    try {
-      // TODOfunção que vai rm product
-    } catch {
+    try {      
+      setCart(cart.filter(p => p.id !== productId))      
+
+    } catch (error) {
       // TODO
+      console.log(error);
     }
   };
 
