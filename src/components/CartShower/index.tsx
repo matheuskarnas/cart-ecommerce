@@ -53,7 +53,7 @@ export function CartShower({ price, image, title, id, amount, handleDelete }: Ca
                 </div>
             </td>
             <td>
-                <strong>R$ 359,80</strong>
+                <strong>R$ {amount * price}</strong>
             </td>
             <td>
                 <button
