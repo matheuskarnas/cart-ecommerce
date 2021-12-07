@@ -12,6 +12,8 @@ export interface CartShowerProps {
     image: string;
     amount: number;
     handleDelete: (id: number) => void;
+    // incrementeProduct:(id: number) => void;
+    // decrementProduct:(product: Product) => void;
 }
 
 export function CartShower({ price, image, title, id, amount, handleDelete }: CartShowerProps) {
@@ -30,8 +32,8 @@ export function CartShower({ price, image, title, id, amount, handleDelete }: Ca
                     <button
                         type="button"
                         data-testid="decrement-product"
-                        //disabled={product.amount <= 1}
-                        // onClick={handleDelete(id)}
+                        disabled={amount <= 1}
+                        // onClick={() => handleDelete(id)}
                     >
                         <MdRemoveCircleOutline size={20} />
                     </button>
@@ -44,7 +46,7 @@ export function CartShower({ price, image, title, id, amount, handleDelete }: Ca
                     <button
                         type="button"
                         data-testid="increment-product"
-                    // onClick={() => handleProductIncrement()}
+                    // onClick={() => incrementeProduct(id)}
                     >
                         <MdAddCircleOutline size={20} />
                     </button>

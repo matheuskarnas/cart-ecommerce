@@ -1,9 +1,10 @@
+// import console from 'console';
 import React from 'react';
 
 import { CartShower } from '../../components/CartShower';
 
 import { useCart } from '../../hooks/useCart';
-import { formatPrice } from '../../util/format';
+// import { formatPrice } from '../../util/format';
 import { Container, ProductTable, Total } from './styles';
 
 interface Product {
@@ -28,6 +29,7 @@ const Cart = (): JSX.Element => {
 
   function handleProductIncrement(product: Product) {
     // TODO
+    
   }
 
   function handleProductDecrement(product: Product) {
@@ -58,6 +60,8 @@ const Cart = (): JSX.Element => {
             id={product.id}
             amount={product.amount}
             handleDelete={handleRemoveProduct}
+            // incrementeProduct={handleProductIncrement}
+            // decrementProduct={handleProductDecrement}
           />)}
         </tbody>
       </ProductTable>

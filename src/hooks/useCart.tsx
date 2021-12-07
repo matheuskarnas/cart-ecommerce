@@ -37,22 +37,24 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const addProduct = async (productId: number) => {
     try {
-      let repitido = false
+      let repetido = false
       // TODO função que vai add product
       for (let i = 0; i < cart.length; i++) {
         if (cart[i].id === productId) {
-          cart[i].amount = cart[i].amount + 1
-          repitido = true;
+          cart[i].amount =  1
+          repetido = true;
         }
       }
 
-      if (repitido) {
+      if (repetido) {
         console.log('item já adicionado')
       } else {
         api.get(`/products/${productId}`)
-          .then(response => (setCart([...cart, response.data])));
+          .then(response => {
+            response.data.amount = 1
+            setCart([...cart, response.data])});
       }
-      repitido = false
+      repetido = false
     } catch (error) {
       // TODO
       console.log(error);
