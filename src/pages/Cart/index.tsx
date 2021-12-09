@@ -39,8 +39,10 @@ const Cart = (): JSX.Element => {
     
   }
 
-  function handleProductDecrement(product: Product) {
+  function handleProductDecrement({id, amount}: Product) {
     // TODO
+    amount--
+    updateProductAmount({id, amount})
 
   }
 
@@ -69,7 +71,7 @@ const Cart = (): JSX.Element => {
             amount={product.amount}
             handleDelete={handleRemoveProduct}
             incrementeProduct={handleProductIncrement}
-            // decrementProduct={handleProductDecrement}
+            decrementProduct={handleProductDecrement}
           />)}
         </tbody>
       </ProductTable>

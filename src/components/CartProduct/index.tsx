@@ -14,7 +14,7 @@ interface CartProductproduct {
     amount: number;
     handleDelete: (id: number) => void;
     incrementeProduct: (product: Product) => void;
-    // decrementProduct:(product: Product) => void;
+    decrementProduct:(product: Product) => void;
 }
 
 export function CartProduct({
@@ -24,7 +24,8 @@ export function CartProduct({
     image,
     amount,
     handleDelete,
-    incrementeProduct
+    incrementeProduct,
+    decrementProduct
 }: CartProductproduct) {
 
     return (
@@ -42,7 +43,7 @@ export function CartProduct({
                         type="button"
                         data-testid="decrement-product"
                         disabled={amount <= 1}
-                    // onClick={() => handleDelete(id)}
+                        onClick={() => decrementProduct({ id, title, price, image, amount })}
                     >
                         <MdRemoveCircleOutline size={20} />
                     </button>
