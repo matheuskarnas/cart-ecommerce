@@ -47,6 +47,7 @@ const Home = (): JSX.Element => {
     <ProductList>
       {
         products.map(product => {
+          let showAmount = cart.find(p => p.id === product.id)
           return (
             <li key={product.id}>
               <img src={product.image} alt="tenis" />
@@ -59,7 +60,7 @@ const Home = (): JSX.Element => {
               >
                 <div data-testid="cart-product-quantity">
                   <MdAddShoppingCart size={16} color="#FFF" />
-                  {/* {cartItemsAmount[product.id] || 0} */} 0
+                  {showAmount?.amount || 0} 
                 </div>
 
                 <span>ADICIONAR AO CARRINHO</span>
