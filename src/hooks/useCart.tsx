@@ -1,5 +1,5 @@
 import { Console, error } from 'console';
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { Product, Stock } from '../types';
@@ -24,6 +24,10 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
+  useEffect(() => {
+    api.get(`/stock/`)
+      .then((response) => setStock(response.data))
+  })
 
   const [cart, setCart] = useState<Product[]>(() => {
 
@@ -58,6 +62,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           });
       }
       repetido = false
+
     } catch (error) {
       // TODO
       console.log(error);
@@ -73,21 +78,24 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       console.log(error);
     }
   };
-
+  const [stock, setStock] = useState<Stock[]>([])
   const updateProductAmount = async ({
     id,
     amount,
   }: UpdateProductAmount) => {
-    try {
+    const checkStock = stock.filter(item => item.id === id)
+    if (checkStock[0].amount < amount) {
+      toast.error(`Temos apenas ${checkStock[0].amount} unidades desse item`)
+    } else if (amount < 1) {
+      toast.error('valor invalido')
+    } else {
       const newCart = cart.map(product => product.id !== id ? product : {
         ...product,
         amount,
       })
       setCart(newCart)
-
-    } catch (error) {
-      console.log(error);
     }
+    console.log(checkStock)    
   }
   return (
     <CartContext.Provider
