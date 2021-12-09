@@ -1,4 +1,4 @@
-import { error } from 'console';
+import { Console, error } from 'console';
 import { createContext, ReactNode, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
@@ -9,7 +9,7 @@ interface CartProviderProps {
 }
 
 interface UpdateProductAmount {
-  productId: number;
+  id: number;
   amount: number;
 }
 
@@ -17,12 +17,13 @@ interface CartContextData {
   cart: Product[];
   addProduct: (productId: number) => Promise<void>;
   removeProduct: (productId: number) => void;
-  updateProductAmount: ({ productId, amount }: UpdateProductAmount) => void;
+  updateProductAmount: ({ id, amount }: UpdateProductAmount) => void;
 }
 
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
+
 
   const [cart, setCart] = useState<Product[]>(() => {
 
@@ -41,18 +42,20 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       // TODO função que vai add product
       for (let i = 0; i < cart.length; i++) {
         if (cart[i].id === productId) {
-          cart[i].amount =  1
+          cart[i].amount = 1
           repetido = true;
         }
       }
 
       if (repetido) {
-        console.log('item já adicionado')
+        toast.error('item já adicionado');
+
       } else {
         api.get(`/products/${productId}`)
           .then(response => {
             response.data.amount = 1
-            setCart([...cart, response.data])});
+            setCart([...cart, response.data])
+          });
       }
       repetido = false
     } catch (error) {
@@ -62,8 +65,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   };
 
   const removeProduct = (productId: number) => {
-    try {      
-      setCart(cart.filter(p => p.id !== productId))      
+    try {
+      setCart(cart.filter(p => p.id !== productId))
 
     } catch (error) {
       // TODO
@@ -72,17 +75,20 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   };
 
   const updateProductAmount = async ({
-    productId,
+    id,
     amount,
   }: UpdateProductAmount) => {
     try {
-      // TODO
+      const newCart = cart.map(product => product.id !== id ? product : {
+        ...product,
+        amount,
+      })
+      setCart(newCart)
+
     } catch (error) {
-      // TODO
-
+      console.log(error);
     }
-  };
-
+  }
   return (
     <CartContext.Provider
       value={{ cart, addProduct, removeProduct, updateProductAmount }}
@@ -90,7 +96,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       {children}
     </CartContext.Provider>
   );
-}
+};
+
+
 
 export function useCart(): CartContextData {
   const context = useContext(CartContext);

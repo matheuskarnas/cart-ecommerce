@@ -3,23 +3,32 @@ import {
     MdAddCircleOutline,
     MdRemoveCircleOutline,
 } from 'react-icons/md';
+import { Product } from '../../types';
 
 
-export interface CartProductProps {
+interface CartProductproduct {
     id: number;
     title: string;
     price: number;
     image: string;
     amount: number;
     handleDelete: (id: number) => void;
-    // incrementeProduct:(id: number) => void;
+    incrementeProduct: (product: Product) => void;
     // decrementProduct:(product: Product) => void;
 }
 
-export function CartProduct({ price, image, title, id, amount, handleDelete }: CartProductProps) {
+export function CartProduct({
+    id,
+    title,
+    price,
+    image,
+    amount,
+    handleDelete,
+    incrementeProduct
+}: CartProductproduct) {
 
     return (
-        <tr data-testid="product" >
+        <tr data-testid="product" key={id}>
             <td>
                 <img src={image} alt="produto" />
             </td>
@@ -33,7 +42,7 @@ export function CartProduct({ price, image, title, id, amount, handleDelete }: C
                         type="button"
                         data-testid="decrement-product"
                         disabled={amount <= 1}
-                        // onClick={() => handleDelete(id)}
+                    // onClick={() => handleDelete(id)}
                     >
                         <MdRemoveCircleOutline size={20} />
                     </button>
@@ -46,7 +55,7 @@ export function CartProduct({ price, image, title, id, amount, handleDelete }: C
                     <button
                         type="button"
                         data-testid="increment-product"
-                    // onClick={() => incrementeProduct(id)}
+                        onClick={() => incrementeProduct({ id, title, price, image, amount })}
                     >
                         <MdAddCircleOutline size={20} />
                     </button>

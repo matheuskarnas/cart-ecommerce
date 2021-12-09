@@ -1,22 +1,17 @@
 // import console from 'console';
 import React from 'react';
 
-import { CartShower } from '../../components/CartShower';
+import { CartProduct } from '../../components/CartProduct';
 
 import { useCart } from '../../hooks/useCart';
 // import { formatPrice } from '../../util/format';
 import { Container, ProductTable, Total } from './styles';
+import { Product } from '../../types'
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  amount: number;
-}
+
 
 const Cart = (): JSX.Element => {
-  var total = Number;
+  
   const { cart, removeProduct, updateProductAmount } = useCart();
   // const cartFormatted = cart.map(product => ({
   //   // TODO
@@ -36,19 +31,23 @@ const Cart = (): JSX.Element => {
     return total
   }
 
-  function handleProductIncrement(product: Product) {
-    // TODO
+  function handleProductIncrement({id, amount}: Product) {
+    // TODO 
+    amount++
+    updateProductAmount({id, amount})
+    
     
   }
 
   function handleProductDecrement(product: Product) {
     // TODO
+
   }
 
   function handleRemoveProduct(productId: number) {
     removeProduct(productId)
   }
-  console.log(cart)
+  // console.log(cart)
   return (
     <Container>
       <ProductTable>
@@ -62,14 +61,14 @@ const Cart = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          {cart.map(product => <CartShower
-            price={product.price}
-            title={product.title}
-            image={product.image}
-            id={product.id}
+          {cart.map(product => <CartProduct
+            id={product.id} 
+            title={product.title} 
+            price={product.price} 
+            image={product.image} 
             amount={product.amount}
             handleDelete={handleRemoveProduct}
-            // incrementeProduct={handleProductIncrement}
+            incrementeProduct={handleProductIncrement}
             // decrementProduct={handleProductDecrement}
           />)}
         </tbody>

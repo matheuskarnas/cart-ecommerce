@@ -48,7 +48,7 @@ const Home = (): JSX.Element => {
       {
         products.map(product => {
           return (
-            <li id={String(product.id)}>
+            <li key={product.id}>
               <img src={product.image} alt="tenis" />
               <strong>{product.title}</strong>
               <span>R$ {product.price}</span>
