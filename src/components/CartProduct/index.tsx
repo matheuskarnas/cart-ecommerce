@@ -1,3 +1,4 @@
+import {formatPrice} from '../../util/format'
 import {
     MdDelete,
     MdAddCircleOutline,
@@ -35,7 +36,7 @@ export function CartProduct({
             </td>
             <td>
                 <strong>{title}</strong>
-                <span>R$ {price}</span>
+                <span>{formatPrice(price)}</span>
             </td>
             <td>
                 <div>
@@ -63,7 +64,7 @@ export function CartProduct({
                 </div>
             </td>
             <td>
-                <strong>R$ {amount * price}</strong>
+                <strong>{formatPrice(amount * price)}</strong>
             </td>
             <td>
                 <button

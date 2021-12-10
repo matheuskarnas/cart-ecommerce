@@ -37,13 +37,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     if (storagedCart) {
       return JSON.parse(storagedCart);
     }
-
     return [];
   });
 
   useEffect(() => {
     localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
-    console.log(cart)
   }, [cart])
 
   const addProduct = async (productId: number) => {

@@ -4,7 +4,7 @@ import React from 'react';
 import { CartProduct } from '../../components/CartProduct';
 
 import { useCart } from '../../hooks/useCart';
-// import { formatPrice } from '../../util/format';
+import { formatPrice } from '../../util/format';
 import { Container, ProductTable, Total } from './styles';
 import { Product } from '../../types'
 
@@ -28,7 +28,7 @@ const Cart = (): JSX.Element => {
     for (let i = 0; i < cart.length; i++) {
       total += cart[i].amount * cart[i].price
     }
-    return total
+    return formatPrice(total)
   }
 
   function handleProductIncrement({id, amount}: Product) {
@@ -81,7 +81,7 @@ const Cart = (): JSX.Element => {
 
         <Total>
           <span>TOTAL</span>
-          <strong>R$ {totalPrice()}</strong>
+          <strong>{totalPrice()}</strong>
         </Total>
       </footer>
     </Container>
