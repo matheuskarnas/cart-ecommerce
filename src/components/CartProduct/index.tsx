@@ -43,7 +43,7 @@ export function CartProduct({
                     <button
                         type="button"
                         data-testid="decrement-product"
-                        // disabled={amount <= 1}
+                        disabled={amount <= 1}
                         onClick={() => decrementProduct({ id, title, price, image, amount })}
                     >
                         <MdRemoveCircleOutline size={20} />
