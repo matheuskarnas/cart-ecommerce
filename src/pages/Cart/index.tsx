@@ -1,4 +1,3 @@
-// import console from 'console';
 import React from 'react';
 import {
   MdDelete,
@@ -35,25 +34,28 @@ const Cart = (): JSX.Element => {
     return formatPrice(total)
   }
 
-  function handleProductIncrement({id, amount}: Product) {
+  function handleProductIncrement(product: Product) {
     // TODO 
-    amount++
-    updateProductAmount({ id, amount })
+    updateProductAmount({
+      productId: product.id,
+      amount: product.amount + 1,
+    });
 
 
   }
 
-  function handleProductDecrement({ id, amount }: Product) {
+  function handleProductDecrement(product: Product) {
     // TODO
-    amount--
-    updateProductAmount({ id, amount })
+    updateProductAmount({
+      productId: product.id,
+      amount: product.amount - 1,
+    });
 
   }
 
   function handleRemoveProduct(productId: number) {
     removeProduct(productId)
   }
-  // console.log(cart)
   return (
     <Container>
       <ProductTable>
