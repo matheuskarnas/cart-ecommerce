@@ -1,7 +1,5 @@
-import { Console, error } from 'console';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { classicNameResolver } from 'typescript';
 import { api } from '../services/api';
 import { Product, Stock } from '../types';
 
@@ -10,7 +8,7 @@ interface CartProviderProps {
 }
 
 interface UpdateProductAmount {
-  id: number;
+  productId: number;
   amount: number;
 }
 
@@ -18,36 +16,38 @@ interface CartContextData {
   cart: Product[];
   addProduct: (productId: number) => Promise<void>;
   removeProduct: (productId: number) => void;
-  updateProductAmount: ({ id, amount }: UpdateProductAmount) => void;
+  updateProductAmount: ({ productId, amount }: UpdateProductAmount) => void;
 }
 
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
-
-  useEffect(() => {
-    api.get(`/stock/`)
-      .then((response) => setStock(response.data))
-  })
-
+  
+  const [stock, setStock] = useState<Stock[]>([])
+  
   const [cart, setCart] = useState<Product[]>(() => {
-
+    
     const storagedCart = localStorage.getItem("@RocketShoes:cart")
-
+    
     if (storagedCart) {
       return JSON.parse(storagedCart);
     }
     return [];
   });
-
+  
+  useEffect(() => {
+    api.get(`/stock/`)
+      .then((response) => setStock(response.data))
+  })
+  
   useEffect(() => {
     localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
   }, [cart])
 
   const addProduct = async (productId: number) => {
     try {
-      let repetido = false
       // TODO função que vai add product
+      let repetido = false
       for (let i = 0; i < cart.length; i++) {
         if (cart[i].id === productId) {          
           repetido = true;
@@ -66,9 +66,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       }
       repetido = false
 
-    } catch (error) {
+    } catch {
       // TODO
-      console.log(error);
+      toast.error('Erro na adição do produto');
     }
   };
 
@@ -78,34 +78,34 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
     } catch (error) {
       // TODO
-      console.log(error);
+      toast.error('Erro na remoção do produto');
     }
   };
-  const [stock, setStock] = useState<Stock[]>([])
+  
   const updateProductAmount = async ({
-    id,
+    productId,
     amount,
   }: UpdateProductAmount) => {
+    if (amount < 1) {
+      toast.error('valor invalido')
+      return
+    } 
 
-    const checkStock = stock.filter(item => item.id === id)
+    const checkStock = stock.filter(item => item.id === productId)
 
     if (checkStock[0].amount < amount) {
 
-      toast.error(`Temos apenas ${checkStock[0].amount} unidades desse item`)
-
-    } else if (amount < 1) {
-
-      toast.error('valor invalido')
+      toast.error('Quantidade solicitada fora de estoque');
 
     } else {
 
-      const newCart = cart.map(product => product.id !== id ? product : {
+      const newCart = cart.map(product => product.id !== productId ? product : {
         ...product,
         amount,
       })
       setCart(newCart)
     }
-
+    
   }
   return (
     <CartContext.Provider
